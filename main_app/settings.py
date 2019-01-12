@@ -117,3 +117,8 @@ STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
 STATIC_URL = "/static/"
 
 django_heroku.settings(locals())
+
+if DEBUG:
+    print('DEBUG enabled')
+else:
+    print('DEBUG disabled')
