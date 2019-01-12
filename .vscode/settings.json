@@ -1,5 +1,15 @@
 {
     "python.linting.pylintEnabled": true,
     "python.linting.enabled": true,
-    "python.linting.pylintPath": "${workspaceFolder}/venv/bin/pylint --load-plugins pylint_django"
+    "python.linting.pylintPath": "${workspaceFolder}/venv/bin/pylint --load-plugins pylint_django",
+    "search.exclude": {
+        "**/venv": true,
+        "**/__pycache__": true
+    },
+    "files.exclude": {
+        "**/venv": true,
+        "**/__pycache__": true
+    },
+    "python.pythonPath": "venv/bin/python",
+    "python.formatting.provider": "autopep8"
 }
