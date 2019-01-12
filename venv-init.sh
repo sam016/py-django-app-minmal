@@ -3,6 +3,7 @@
 # exit on first error
 set -e
 
+# colored echo
 cecho() {
   local code="\033["
   case "$1" in
@@ -20,23 +21,41 @@ cecho() {
   echo -e "$text"
 }
 
-cecho y "Creating the virualenv..."
-virtualenv --python=/usr/local/bin/python3.7 venv
+# checks if the argument exists
+has_arg() {
+  first="$1"
+  shift
+  if [[ "$@" == *"$first"* ]]
+  then
+      echo 1
+  fi
+}
 
-cecho y "Upgrading pip..."
+skip_venv=$(has_arg "--skip-venv" "$@")
+djg_run=$(has_arg "--run" "$@")
+
+if [[ $skip_venv ]]
+then
+  cecho y "Skipping creating the virualenv..."
+else
+  cecho c "Creating the virualenv..."
+  virtualenv --python=/usr/local/bin/python3.7 venv
+fi
+
+cecho c "Upgrading pip..."
 venv/bin/pip install --upgrade pip
 
-cecho y "Installing the dependecies..."
+cecho c "Installing the dependecies..."
 venv/bin/pip install -r requirements.txt
 
-if [[ "$@" == "--run" ]]
+if [[ $djg_run ]]
 then
-    cecho y "Running migration ..."
+    cecho c "Running migration ..."
     venv/bin/python manage.py migrate
 
-    cecho y "Running the server..."
+    cecho c "Running the server..."
     venv/bin/python manage.py runserver 0.0.0.0:5000
 else
-    cecho y "Activating the virtualenv..."
+    cecho c "Activating the virtualenv..."
     source venv/bin/activate
 fi

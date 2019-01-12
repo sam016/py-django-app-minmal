@@ -1,5 +1,5 @@
 '''
-Drivers vierws
+Drivers views
 '''
 
 from django.shortcuts import render
@@ -12,8 +12,11 @@ def get_list(request):
     return render(request, 'ola/drivers-list.html')
 
 
-def get_by_id(request id):
+def get_by_id(request, id):
     '''
     Shows a specific driver screen
     '''
-    return render(request, 'ola/drivers-id.html')
+    context = {
+        'id': id,
+    }
+    return render(request, 'ola/driver-id.html', context)
