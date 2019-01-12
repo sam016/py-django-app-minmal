@@ -15,7 +15,7 @@ $ cd python-getting-started
 $ python3 -m venv getting-started
 $ pip install -r requirements.txt
 
-$ createdb python_getting_started
+$ createdb python_main_app
 
 $ python manage.py migrate
 $ python manage.py collectstatic

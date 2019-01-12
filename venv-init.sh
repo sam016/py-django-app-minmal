@@ -21,7 +21,7 @@ cecho() {
 }
 
 cecho y "Creating the virualenv..."
-virtualenv --python=/usr/bin/python3.6 venv
+virtualenv --python=/usr/local/bin/python3.7 venv
 
 cecho y "Upgrading pip..."
 venv/bin/pip install --upgrade pip
@@ -31,6 +31,9 @@ venv/bin/pip install -r requirements.txt
 
 if [[ "$@" == "--run" ]]
 then
+    cecho y "Running migration ..."
+    venv/bin/python manage.py migrate
+
     cecho y "Running the server..."
     venv/bin/python manage.py runserver 0.0.0.0:5000
 else
