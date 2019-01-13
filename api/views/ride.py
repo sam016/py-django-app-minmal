@@ -36,21 +36,17 @@ class BookRide(generics.CreateAPIView):
 
     def post(self, request, *args, **kwargs):
         customer = request.data.get('customer')
-        if isinstance(customer, str):
+        if customer and isinstance(customer, str) and not customer.isdigit():
             cust_id = Customer.objects.filter(
-                id=customer).values_list('id', flat=True).first()
+                username=customer).values_list('id', flat=True).first()
 
+            # if customer is not present by that username create one
             if not cust_id:
-                cust_id = Customer.objects.filter(
-                    username=customer).values_list('id', flat=True).first()
+                customer = Customer(username=customer, first_name=customer)
+                customer.save()
+                cust_id = customer.id
 
-                # if customer is not present by that username create one
-                if not cust_id:
-                    customer = Customer(username=customer, first_name=customer)
-                    customer.save()
-                    cust_id = customer.id
-
-                request.data['customer'] = cust_id
+            request.data['customer'] = cust_id
 
         return self.create(request, *args, **kwargs)
 
@@ -84,21 +80,17 @@ class AcceptRide(BaseUpdateRideApiView):
 
     def put(self, request, *args, **kwargs):
         driver = request.data.get('driver')
-        if isinstance(driver, str):
+        if driver and isinstance(driver, str) and not driver.isdigit():
             drvr_id = Driver.objects.filter(
-                id=driver).values_list('id', flat=True).first()
+                username=driver).values_list('id', flat=True).first()
 
+            # if driver is not present by that username create one
             if not drvr_id:
-                drvr_id = Driver.objects.filter(
-                    username=driver).values_list('id', flat=True).first()
+                driver = Driver(username=driver, first_name=driver)
+                driver.save()
+                drvr_id = driver.id
 
-                # if driver is not present by that username create one
-                if not drvr_id:
-                    driver = Driver(username=driver, first_name=driver)
-                    driver.save()
-                    drvr_id = driver.id
-
-                request.data['driver'] = drvr_id
+            request.data['driver'] = drvr_id
 
         with transaction.atomic():
             ride = self.get_ride()
