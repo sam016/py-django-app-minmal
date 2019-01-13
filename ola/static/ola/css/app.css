@@ -1,0 +1,39 @@
+.container+.container {
+    margin-top: 30px;
+}
+
+.container-header {
+    color: #222;
+    font-size: 1.3em;
+    margin-bottom: 10px;
+    border-bottom: 1px solid #EEE;
+    padding: 5px 10px;
+}
+
+tr.ride-Pending {
+    background-color: #f5f1e2;
+}
+
+tr.ride-Ongoing {
+    background-color: #d5e0f5;
+}
+
+tr.ride-Finished {
+    background-color: #d5f5d8;
+}
+
+tr.row-ride>.status {
+    font-weight: bold;
+}
+
+tr.row-ride.ride-Pending>.status {
+    color: #978131;
+}
+
+tr.row-ride.ride-Ongoing>.status {
+    color: #6c8ac4;
+}
+
+tr.row-ride.ride-Finished>.status {
+    color: #5da864;
+}

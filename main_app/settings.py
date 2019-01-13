@@ -11,9 +11,8 @@ https://docs.djangoproject.com/en/2.0/ref/settings/
 """
 
 import os
-import django_heroku
 from distutils.util import strtobool
-
+import django_heroku
 
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
@@ -24,7 +23,8 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 # See https://docs.djangoproject.com/en/2.0/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = "NdS!$_kygj_dCpfqtv3DMYPJaBL9NL+Uc$9p4&E6MEHyRk=a?L?L+2vFdsK!s8_w2pU-hHMy5JYRTvWX7-f?paK988^j_&dYECXN#xRQ6ZgfJjDUDFE5Yuebj8gY%7w*"
+SECRET_KEY = "NdS!$_kygj_dCpfqtv3DMYPJaBL9NL+Uc$9p4&E6MEHyRk=a?L?" + \
+    "L+2vFdsK!s8_w2pU-hHMy5JYRTvWX7-f?paK988^j_&dYECXN#xRQ6ZgfJjDUDFE5Yuebj8gY%7w*"
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = strtobool(os.environ.get('DEBUG', 'True'))
@@ -41,7 +41,11 @@ INSTALLED_APPS = [
     "django.contrib.sessions",
     "django.contrib.messages",
     "django.contrib.staticfiles",
+    "rest_framework",
+    "django_filters",
+    'drf_yasg',
     "ola",
+    "api",
 ]
 
 MIDDLEWARE = [
@@ -80,7 +84,7 @@ WSGI_APPLICATION = "main_app.wsgi.application"
 
 DATABASES = {
     "default": {
-        "ENGINE" : "django.db.backends.sqlite3",
+        "ENGINE": "django.db.backends.sqlite3",
         "NAME": os.path.join(BASE_DIR, "db.sqlite3")
     }
 }
@@ -118,9 +122,16 @@ USE_TZ = True
 STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
 STATIC_URL = "/static/"
 
-django_heroku.settings(locals())
+# Swagger Config Settings
+# https://drf-yasg.readthedocs.io/en/stable/settings.html
+SWAGGER_SETTINGS = {
+    'DOC_EXPANSION': 'none'
+}
 
-if DEBUG:
-    print('DEBUG enabled')
-else:
-    print('DEBUG disabled')
+# DRF Settings
+REST_FRAMEWORK = {
+    'DEFAULT_FILTER_BACKENDS': ('django_filters.rest_framework.DjangoFilterBackend',)
+}
+
+
+django_heroku.settings(locals())

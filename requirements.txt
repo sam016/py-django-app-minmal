@@ -1,5 +1,11 @@
 django
 gunicorn
 django-heroku
+autopep8==1.4.3
 pylint==2.2.2
 pylint-django==2.0.5
+djangorestframework==3.9.0
+markdown==3.0.1
+drf-yasg==1.12.1
+humanize==0.5.1
+django-filter==2.0.0

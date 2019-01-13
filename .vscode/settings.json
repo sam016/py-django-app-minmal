@@ -1,11 +1,12 @@
 {
     "python.linting.pylintEnabled": true,
     "python.linting.enabled": true,
-    "python.linting.pylintPath": "${workspaceFolder}/venv/bin/pylint --load-plugins pylint_django",
+    "python.linting.pylintPath": "${workspaceFolder}/venv/bin/pylint",
     "search.exclude": {
-        "**/venv": true,
         "**/__pycache__": true,
-        "**/staticfiles": true
+        "**/.git": true,
+        "**/staticfiles": true,
+        "**/venv": true
     },
     "files.exclude": {
         "**/__pycache__": true,

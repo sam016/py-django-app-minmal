@@ -3,6 +3,10 @@
 
 {% block title %}Customers{% endblock %}
 
+{% block scripts %}
+<script src="{% static 'ola/js/customers.js' %}"></script>
+{% endblock %}
+
 {% block content %}
 
 <div class="container text-center">
@@ -11,8 +15,81 @@
     </p>
 </div>
 
-<div class="container">
+<div data-ng-controller="customer-ctrl">
+
+    <div class="container">
+        <div class="container-header">
+            Book a Ride
+        </div>
+        <div class="row col-lg-12">
+            <form class="navbar-form navbar-left" ng-submit='submitForm($event)'>
+                <fieldset ng-disabled="isBooking">
+                    <label for="basic-url">Username</label>
+                    <div class="form-group">
+                        <input type="text" class="form-control" name="username" placeholder="Username" ng-model="username"
+                            autofocus>
+                    </div>
+                    <button type="submit" class="btn btn-default" ng-click="bookRide()">Book</button>
+                </fieldset>
+            </form>
+        </div>
+        <div class="row col-lg-12">
+            <div class="alert alert-{[{isBooking?'warning':( isBookingSuccess?'success':'danger')}]}" role="alert"
+                ng-bind-html="bookMsg">
+            </div>
+        </div>
+    </div>
+
+    <div class="container">
+        <div class="container-header">
+            Latest Bookings
+            <span class="h5">
+                (latest 5)
+            </span>
+
+            <button class="btn btn-default" ng-disabled="isRefreshingList" ng-click="refreshStats()" style="font-size: 10px; float:right;">
+                <span class="glyphicon glyphicon-refresh"></span>
+                {[{isRefreshingList? 'Refreshing...': 'Refresh'}]}
+            </button>
+        </div>
+        <div class="row col-lg-12">
+            <table class="table">
+                <thead>
+                    <th>Username</th>
+                    <th>Rides Count</th>
+                    <th>Rides Pending</th>
+                    <th>Rides Ongoing</th>
+                    <th>Rides Completed</th>
+                    <th>Last changed on</th>
+                </thead>
+                <tbody>
+                    <tr ng-repeat="customerStat in customerListStats" ng-show="customerListStats.length && !isRefreshingList">
+                        <td><a href="/customers/{[{customerStat.id}]}">{[{customerStat.username}]}</a></td>
+                        <td>{[{customerStat.rides_count}]}</td>
+                        <td>{[{customerStat.rides_requested}]}</td>
+                        <td>{[{customerStat.rides_ongoing}]}</td>
+                        <td>{[{customerStat.rides_completed}]}</td>
+                        <td>{[{customerStat.last_updated_at | toDate | date:'short'}]}</td>
+                    </tr>
+                    <tr class="text-center" ng-hide="customerListStats.length || isRefreshingList">
+                        <td colspan=6>
+                            <div class="alert alert-warning">
+                                No customers present
+                            </div>
+                        </td>
+                    </tr>
+                    <tr class="text-center" ng-show="isRefreshingList">
+                        <td colspan=6>
+                            <div class="alert alert-default">
+                                Refreshing...
+                            </div>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
 
 </div>
 
-{% endblock %}}
+{% endblock %}

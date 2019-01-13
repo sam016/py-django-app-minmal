@@ -3,16 +3,68 @@
 
 {% block title %}Dashboard{% endblock %}
 
+{% block scripts %}
+<script src="{% static 'ola/js/dashboard.js' %}"></script>
+{% endblock %}
+
 {% block content %}
 
-<div class="container text-center">
-    <p>
-        <h3>Dashboard</h3>
-    </p>
+<div ng-controller="dashboard-ctrl">
+
+    <div class="container text-center">
+        <p>
+            <h3>Dashboard</h3>
+
+            <button class="btn btn-default" ng-disabled="isRefreshingList" ng-click="refreshRides()" style="font-size: 10px; float:right;">
+                <span class="glyphicon glyphicon-refresh"></span>
+                {[{isRefreshingList? 'Refreshing...': 'Refresh'}]}
+            </button>
+        </p>
+    </div>
+
+    <div class="container" style="margin:20px 0 50px;">
+        <div class="row col-lg-12">
+            <table class="table">
+                <thead>
+                    <th>Ride</th>
+                    <th>Customer</th>
+                    <th>Requested at</th>
+                    <th>Accepted at</th>
+                    <th>Completed at</th>
+                    <th>Time elapsed</th>
+                    <th>Status</th>
+                    <th>Driver</th>
+                </thead>
+                <tbody>
+                    <tr ng-repeat="rideStat in rideStats" ng-show="rideStats.length && !isRefreshingList" class='row-ride ride-{[{rideStat.status}]}'>
+                        <td><a href="/rides/{[{rideStat.id}]}">{[{rideStat.id}]}</a></td>
+                        <td><a href="/customers/{[{rideStat.customer}]}">{[{rideStat.customer_username}]}</a></td>
+                        <td>{[{rideStat.requested_at | toDate | date:'short'}]}</td>
+                        <td>{[{rideStat.started_at | toDate | date:'short'}]}</td>
+                        <td>{[{rideStat.finished_at | toDate | date:'short'}]}</td>
+                        <td>{[{rideStat.time_elapsed}]}</td>
+                        <td class="status">{[{rideStat.status}]}</td>
+                        <td><a href="/drivers/{[{rideStat.driver}]}">{[{rideStat.driver_username}]}</a></td>
+                    </tr>
+                    <tr class="text-center" ng-hide="rideStats.length || isRefreshingList">
+                        <td colspan=8>
+                            <div class="alert alert-warning">
+                                No rides present
+                            </div>
+                        </td>
+                    </tr>
+                    <tr class="text-center" ng-show="isRefreshingList">
+                        <td colspan=8>
+                            <div class="alert alert-default">
+                                Refreshing...
+                            </div>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+
 </div>
 
-<div class="container" style="margin:20px 0 50px;">
-
-</div>
-
-{% endblock %}}
+{% endblock %}
